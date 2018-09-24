@@ -213,16 +213,6 @@ zfssa_iscsi_initiator_group:
 zfssa_iscsi_target_portal:
 zfssa_iscsi_target_interfaces:
 
-#############################################
-# IBM GPFS / Spectrum Scale
-#############################################
-gpfs_images_dir: {{ gpfs_images_dir }}
-gpfs_images_share_mode: {{ gpfs_images_share_mode }}
-gpfs_max_clone_depth: {{ gpfs_max_clone_depth }}
-gpfs_mount_point_base: {{ gpfs_mount_point_base }}
-gpfs_sparse_volumes: {{ gpfs_sparse_volumes }}
-gpfs_storage_pool: {{ gpfs_storage_pool }}
-
 ####################
 # Kolla
 ####################
