@@ -197,6 +197,18 @@ zfssa_target_portal = {{ zfssa_iscsi_target_portal }}
 zfssa_target_interfaces = {{ zfssa_iscsi_target_interfaces }}
 {% endif %}
 
+{% if enable_cinder_backend_gpfs | bool %}
+[gpfs-1]
+volume_driver = cinder.volume.drivers.ibm.gpfs.GPFSDriver
+volume_backend_name = gpfs-1
+gpfs_images_dir = {{ gpfs_images_dir }}
+gpfs_images_share_mode = {{ gpfs_images_share_mode }}
+gpfs_max_clone_depth = {{ gpfs_max_clone_depth }}
+gpfs_mount_point_base = {{ gpfs_mount_point_base }}
+gpfs_sparse_volumes = {{ gpfs_sparse_volumes }}
+gpfs_storage_pool = {{ gpfs_storage_pool }}
+{% endif %}
+
 [privsep_entrypoint]
 helper_command=sudo cinder-rootwrap /etc/cinder/rootwrap.conf privsep-helper --config-file /etc/cinder/cinder.conf
 

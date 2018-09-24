@@ -20,6 +20,7 @@ nova_services:
       - "libvirtd:/var/lib/libvirt"
       - "{{ nova_instance_datadir_volume }}:/var/lib/nova/"
       - "{% if enable_cinder_backend_nfs | bool %}/var/lib/nova/mnt:/var/lib/nova/mnt:shared{% endif %}"
+      - "{% if enable_cinder_backend_gpfs | bool %}{{ gpfs_mount_point_base }}:{{ gpfs_mount_point_base }}{% endif %}"
       - "nova_libvirt_qemu:/etc/libvirt/qemu"
       - "{{ kolla_dev_repos_directory ~ '/nova/nova:/var/lib/kolla/venv/lib/python2.7/site-packages/nova' if nova_dev_mode | bool else '' }}"
     dimensions: "{{ nova_libvirt_dimensions }}"

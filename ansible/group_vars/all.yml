@@ -429,6 +429,7 @@ enable_cinder_backend_iscsi: "{{ enable_cinder_backend_lvm | bool or enable_cind
 enable_cinder_backend_lvm: "no"
 enable_cinder_backend_nfs: "no"
 enable_cinder_backend_zfssa_iscsi: "no"
+enable_cinder_backend_gpfs: "no"
 enable_cloudkitty: "no"
 enable_congress: "no"
 enable_designate: "no"
@@ -639,7 +640,9 @@ glance_backend_ceph: "{{ enable_ceph }}"
 glance_backend_vmware: "no"
 # ceph backend has priority over swift in all-ceph clusters
 glance_backend_swift: "{{ not (enable_ceph | bool) and enable_swift | bool }}"
-glance_file_datadir_volume: "glance"
+glance_backend_gpfs: "no"
+glance_gpfs_base: "/gpfs/openstack/glance"
+glance_file_datadir_volume: "{{ glance_gpfs_base if glance_backend_gpfs | bool else 'glance' }}"
 glance_enable_rolling_upgrade: "no"
 glance_api_hosts: "{{ [groups['glance-api']|first] if glance_backend_file | bool and glance_file_datadir_volume == 'glance' else groups['glance-api'] }}"
 
@@ -720,7 +723,9 @@ nova_backend_ceph: "{{ enable_ceph }}"
 nova_backend: "{{ 'rbd' if nova_backend_ceph | bool else 'default' }}"
 # Valid options are [ kvm, qemu, vmware, xenapi ]
 nova_compute_virt_type: "kvm"
-nova_instance_datadir_volume: "nova_compute"
+nova_backend_gpfs: "no"
+nova_gpfs_base: "/gpfs/openstack/nova/"
+nova_instance_datadir_volume: "{{ nova_gpfs_base if nova_backend_gpfs | bool else 'nova_compute'}}"
 
 #######################
 # Murano options
@@ -803,6 +808,16 @@ ceph_pool_pgp_num: 8
 # Set the store type for ceph OSD
 # Valid options are [ filestore, bluestore]
 ceph_osd_store_type: "bluestore"
+
+######################
+# GPFS / Spectrum Scale support
+#####################
+gpfs_images_dir: "/gpfs/openstack/glance/images/"
+gpfs_images_share_mode: "copy-on-write"
+gpfs_max_clone_depth: "0"
+gpfs_mount_point_base: "/gpfs/openstack/cinder/"
+gpfs_sparse_volumes: "True"
+gpfs_storage_pool: "system"
 
 #####################
 # VMware support
